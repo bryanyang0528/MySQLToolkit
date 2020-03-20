@@ -25,7 +25,7 @@ with open(os.path.join(here, 'README.md')) as f:
 
 setuptools_kwargs = {
     'install_requires': [
-            'PyMySQL',
+        'PyMySQL',
     ],
     'zip_safe': False,
 }

@@ -1,0 +1,36 @@
+version: 2.1
+
+jobs:
+  lint:
+    docker:
+    - image: circleci/python:3.7.0
+    steps:
+    - checkout
+    - run: sudo pip install flake8
+    - run: flake8
+
+  unit-tests:
+    docker:
+    - image: circleci/python:3.7.0
+    steps:
+    - checkout
+    - run:
+        name: Install Packages
+        command: |
+          apt-get update && apt install mariadb-server
+          pip install -r requirements-dev.txt
+    - run:
+        name: Run Tests
+        command: ./run_ci.sh
+    - store_test_results:
+        path: /tmp/test-results
+    - store_artifacts:
+        path: ./coverage.xml
+
+workflows:
+  build:
+      jobs:
+      - lint
+      - unit-tests:
+          requires:
+          - lint
